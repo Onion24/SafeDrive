@@ -3,7 +3,7 @@ let indiceCorrente = 0;
 let punteggio = 0;
 let corrette = 0;
 let timer = null;
-let secondiRimasti = 10;
+let secondiRimasti = 30;
 let rispostaData = false;
 
 const canvas = document.getElementById('simCanvas');
@@ -99,16 +99,18 @@ function aggiornaDots() {
 }
 
 function avviaTimer() {
-  secondiRimasti = 10;
+  secondiRimasti = 30;
   rispostaData = false;
   const fill = document.getElementById('timerFill');
   const label = document.getElementById('timerLabel');
 
   clearInterval(timer);
+  label.textContent = secondiRimasti;
+  fill.style.width = '100%';
   timer = setInterval(() => {
     secondiRimasti--;
     label.textContent = secondiRimasti;
-    fill.style.width = (secondiRimasti * 10) + '%';
+    fill.style.width = (secondiRimasti / 30 * 100) + '%';
     if (fill.style.width) fill.style.background = secondiRimasti > 4 ? '#EF9F27' : '#E24B4A';
 
     if (secondiRimasti <= 0) {
