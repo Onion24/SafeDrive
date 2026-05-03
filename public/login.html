@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accedi — SafeDrive</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo"><span class="nav-dot"></span>SafeDrive Simulator</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="simulator.html">Simulatore</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+        </ul>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card">
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tabLogin" onclick="mostraTab('login')">Accedi</button>
+                <button class="auth-tab" id="tabRegister" onclick="mostraTab('register')">Registrati</button>
+            </div>
+
+            <!-- Form login -->
+            <div id="formLogin">
+                <h2>Bentornato</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="tua@email.it">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••">
+                </div>
+                <div class="form-error hidden" id="loginError"></div>
+                <button class="btn-primary full" id="btnLogin">Accedi</button>
+            </div>
+
+            <!-- Form registrazione -->
+            <div id="formRegister" class="hidden">
+                <h2>Crea il tuo account</h2>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="regUsername" placeholder="Il tuo nome utente">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" placeholder="tua@email.it">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" placeholder="Minimo 6 caratteri">
+                </div>
+                <div class="form-error hidden" id="regError"></div>
+                <button class="btn-primary full" id="btnRegister">Registrati</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // Se già loggato vai alla dashboard
+        if (localStorage.getItem('token')) {
+            window.location.href = '/dashboard.html';
+        }
+
+        function mostraTab(tab) {
+            document.getElementById('formLogin').classList.toggle('hidden', tab !== 'login');
+            document.getElementById('formRegister').classList.toggle('hidden', tab !== 'register');
+            document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+            document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+        }
+
+        document.getElementById('btnLogin').addEventListener('click', async () => {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errEl = document.getElementById('loginError');
+
+            try {
+                const dati = await login(email, password);
+                salvaSessione(dati.token, dati.username);
+                window.location.href = '/dashboard.html';
+            } catch (e) {
+                errEl.textContent = e.message;
+                errEl.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('btnRegister').addEventListener('click', async () => {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const errEl = document.getElementById('regError');
+
+            try {
+                const dati = await register(username, email, password);
+                salvaSessione(dati.token, dati.username);
+                window.location.href = '/dashboard.html';
+            } catch (e) {
+                errEl.textContent = e.message;
+                errEl.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

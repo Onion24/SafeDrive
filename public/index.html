@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeDrive Simulator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <span class="nav-dot"></span>
+            SafeDrive
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="simulator.html">Simulatore</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+        </ul>
+        <div class="nav-auth" id="navAuth">
+            <a href="login.html" class="btn-outline">Accedi</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <span class="badge-red">Educazione stradale interattiva</span>
+        <h1>Impara a guidare in sicurezza<br>prima di sederti al volante</h1>
+        <p>Scenari reali, dati ISTAT aggiornati, quiz patentino.<br>Ogni scelta che fai qui potrebbe salvarti la vita
+            sulla strada.</p>
+        <div class="hero-btns">
+            <a href="simulator.html" class="btn-primary">Inizia il simulatore</a>
+            <a href="quiz.html" class="btn-outline">Fai il quiz</a>
+        </div>
+    </section>
+
+    <section class="stats-strip" id="statsStrip">
+        <div class="stat-cell">
+            <div class="stat-num" id="statIncidenti">—</div>
+            <div class="stat-label">incidenti in Italia nel 2023</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-num" id="statMorti">—</div>
+            <div class="stat-label">vittime della strada</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-num">18-29</div>
+            <div class="stat-label">fascia d'età più a rischio</div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Cosa puoi fare</h2>
+        <div class="cards-row">
+            <div class="feature-card">
+                <div class="feature-icon icon-red">&#9632;</div>
+                <h3>Simulatore scenari</h3>
+                <p>Affronta situazioni reali di guida e scopri la scelta corretta secondo il Codice della Strada.</p>
+                <a href="simulator.html" class="card-link">Vai al simulatore →</a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon icon-blue">&#9632;</div>
+                <h3>Quiz patentino</h3>
+                <p>Domande con timer. Testa la tua preparazione e vedi dove migliorare.</p>
+                <a href="quiz.html" class="card-link">Fai il quiz →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="charts-section">
+        <h2>Cause principali di incidenti</h2>
+        <p class="section-sub">Fonte: ISTAT 2023</p>
+        <div class="bar-chart" id="barChart">Caricamento dati...</div>
+    </section>
+    <!-- Sezione dati World Bank - nascosta finché non arrivano i dati -->
+    <section class="charts-section" id="sezioneWorldBank" style="display:none">
+        <h2>Andamento morti stradali in Italia</h2>
+        <p class="section-sub">
+            <span id="wbFonte">Fonte: World Bank Open Data</span>
+            — morti ogni 100.000 abitanti
+        </p>
+        <p style="margin-bottom: 16px; font-size: 14px; color: var(--testo-muted)">
+            Dato più recente disponibile (<span id="wbAnno">—</span>):
+            <strong style="color: var(--blu)" id="wbValore">—</strong>
+            morti ogni 100.000 abitanti
+        </p>
+        <div class="bar-chart" id="worldbankChart">Caricamento...</div>
+    </section>
+
+    <section class="classifica-section">
+        <h2>Classifica questa settimana</h2>
+        <div class="classifica-list" id="classificaList">Caricamento...</div>
+    </section>
+
+    <script src="js/api.js"></script>
+    <script>
+        // Aggiorna navbar se utente loggato
+        const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('navAuth').innerHTML =
+                `<span class="nav-user">Ciao, ${username}</span>
+         <button onclick="logout()" class="btn-outline">Esci</button>`;
+        }
+
+        // Carica statistiche ISTAT
+        getStats().then(dati => {
+            // Dati locali ISTAT (già c'erano)
+            document.getElementById('statIncidenti').textContent =
+                dati.totale_incidenti.toLocaleString('it-IT');
+            document.getElementById('statMorti').textContent =
+                dati.morti.toLocaleString('it-IT');
+
+            // Barre delle cause
+            const container = document.getElementById('barChart');
+            container.innerHTML = dati.cause.map(c => `
+                <div class="bar-item">
+                <span class="bar-label">${c.causa}</span>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width:${c.percentuale}%"></div>
+                </div>
+                <span class="bar-val">${c.percentuale}%</span>
+                </div>
+            `).join('');
+
+            // Dati World Bank — andamento morti per 100k abitanti
+            if (dati.andamento_mondiale && dati.andamento_mondiale.length > 0) {
+                const contenitore = document.getElementById('worldbankChart');
+
+                // Prendi il valore più recente disponibile
+                const piuRecente = dati.andamento_mondiale[0];
+                document.getElementById('wbAnno').textContent = piuRecente.anno;
+                document.getElementById('wbValore').textContent = piuRecente.morti_per_100k;
+
+                // Mostra tutti gli anni come barre
+                const max = Math.max(...dati.andamento_mondiale.map(d => d.morti_per_100k));
+                contenitore.innerHTML = dati.andamento_mondiale.map(d => `
+                <div class="bar-item">
+                    <span class="bar-label">${d.anno}</span>
+                    <div class="bar-track">
+                    <div class="bar-fill" style="width:${(d.morti_per_100k / max * 100).toFixed(1)}%; background: var(--blu)"></div>
+                    </div>
+                    <span class="bar-val">${d.morti_per_100k}</span>
+                </div>
+                `).join('');
+
+                // Mostra la sezione (era nascosta)
+                document.getElementById('sezioneWorldBank').style.display = 'block';
+
+                // Avviso se i dati esterni non erano disponibili
+                if (dati.avviso) {
+                    document.getElementById('wbFonte').textContent = '⚠ ' + dati.avviso;
+                } else {
+                    document.getElementById('wbFonte').textContent =
+                        'Fonte: World Bank Open Data — dati aggiornati in tempo reale';
+                }
+            }
+
+        }).catch(() => {
+            document.getElementById('barChart').textContent = 'Dati non disponibili';
+        });
+
+        // Carica classifica
+        getClassifica().then(lista => {
+            const el = document.getElementById('classificaList');
+            if (!lista.length) { el.textContent = 'Nessun punteggio ancora.'; return; }
+            el.innerHTML = lista.map((u, i) => `
+        <div class="classifica-row">
+          <span class="rank">${i + 1}</span>
+          <span class="cname">${u.username}</span>
+          <span class="cpts">${u.totale_punti} pt</span>
+        </div>
+      `).join('');
+        }).catch(() => { });
+    </script>
+</body>
+
+</html>

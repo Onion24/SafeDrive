@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulatore — SafeDrive</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo"><span class="nav-dot"></span>SafeDrive</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="simulator.html" class="active">Simulatore</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+        </ul>
+    </nav>
+
+    <!-- Stato: inizio -->
+    <div id="schermataInizio" class="schermata">
+        <div class="inizio-box">
+            <h1>Simulatore di guida</h1>
+            <p>Ti verranno presentati 5 scenari reali. Per ognuno hai pochi secondi per scegliere. Al termine vedrai il
+                tuo punteggio e le spiegazioni.</p>
+            <div class="info-row">
+                <span>5 scenari</span>
+                <span>·</span>
+                <span>10 secondi a scenario</span>
+                <span>·</span>
+                <span>max 500 punti</span>
+            </div>
+            <button class="btn-primary" id="btnIniziaSimulatore">Inizia</button>
+        </div>
+    </div>
+
+    <!-- Stato: simulatore attivo -->
+    <div id="schermataSimulatore" class="schermata hidden">
+        <div class="sim-header">
+            <div class="sim-progress-text" id="simProgressText">Scenario 1 di 5</div>
+            <div class="sim-score-badge" id="simScore">0 pt</div>
+        </div>
+        <div class="sim-progress-bar">
+            <div class="sim-progress-fill" id="simProgressFill"></div>
+        </div>
+
+        <div class="sim-layout">
+            <div class="sim-scene">
+                <canvas id="simCanvas" width="700" height="300"></canvas>
+                <div class="sim-scene-text">
+                    <span class="badge-yellow" id="simCondizioni"></span>
+                    <p id="simDescrizione"></p>
+                    <div class="timer-row">
+                        <div class="timer-track">
+                            <div class="timer-fill" id="timerFill"></div>
+                        </div>
+                        <span class="timer-label" id="timerLabel">10</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sim-sidebar">
+                <div class="sidebar-head">
+                    <strong>Cosa fai?</strong>
+                    <span>Scegli la risposta</span>
+                </div>
+                <div class="sim-choices" id="simChoices"></div>
+                <div class="sim-feedback hidden" id="simFeedback">
+                    <div class="feedback-title" id="feedbackTitle"></div>
+                    <p id="feedbackSpiegazione"></p>
+                    <p class="feedback-stat" id="feedbackStat"></p>
+                    <p class="feedback-articolo" id="feedbackArticolo"></p>
+                </div>
+                <button class="btn-primary hidden" id="btnProssimo">Prossimo scenario →</button>
+                <div class="progress-dots" id="progressDots"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stato: risultato finale -->
+    <div id="schermataRisultato" class="schermata hidden">
+        <div class="risultato-box">
+            <div class="risultato-emoji" id="risultatoEmoji"></div>
+            <h2 id="risultatoTitolo"></h2>
+            <div class="risultato-stats">
+                <div class="r-stat"><span id="rPunti">0</span><small>punti</small></div>
+                <div class="r-stat"><span id="rCorrette">0</span><small>corrette</small></div>
+                <div class="r-stat"><span id="rPerc">0%</span><small>precisione</small></div>
+            </div>
+            <p id="risultatoMessaggio"></p>
+            <div class="risultato-btns">
+                <button class="btn-primary" id="btnRiprova">Riprova</button>
+                <a href="quiz.html" class="btn-outline">Fai il quiz</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/simulator.js"></script>
+</body>
+
+</html>

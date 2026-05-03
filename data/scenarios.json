@@ -1,0 +1,87 @@
+[
+  {
+    "id": 1,
+    "titolo": "Semaforo giallo di notte",
+    "condizioni": "Notte, pioggia intensa",
+    "descrizione": "Stai guidando di notte su una strada statale. Piove forte. Il semaforo davanti a te diventa giallo. Sul marciapiede un pedone con ombrello sembra voler attraversare.",
+    "immagine": "notte_pioggia",
+    "scelte": [
+      { "id": "A", "testo": "Accelero per passare col giallo prima che diventi rosso" },
+      { "id": "B", "testo": "Rallento, mi preparo a fermarmi e osservo il pedone" },
+      { "id": "C", "testo": "Mantengo la velocità e suono il clacson al pedone" }
+    ],
+    "corretta": "B",
+    "spiegazione": "Il Codice della Strada (art. 41) impone di rallentare e fermarsi al giallo, salvo che l'arresto non sia pericoloso. Con pioggia e pedone in vista, rallentare è l'unica scelta sicura.",
+    "articolo": "Art. 41 C.d.S.",
+    "statistica": "Questo scenario causa il 18% degli incidenti notturni in Italia (ISTAT 2023).",
+    "categoria": "semaforo"
+  },
+  {
+    "id": 2,
+    "titolo": "Sorpasso in curva",
+    "condizioni": "Giorno, strada provinciale",
+    "descrizione": "Sei su una strada provinciale e stai seguendo un camion lento da qualche minuto. Si avvicina una curva verso sinistra. Il conducente dietro di te lampeggina per farti pressione.",
+    "immagine": "curva_provinciale",
+    "scelte": [
+      { "id": "A", "testo": "Sorpasso subito prima della curva per liberarmi del camion" },
+      { "id": "B", "testo": "Ignoro chi mi lampeggia e aspetto un rettilineo sicuro" },
+      { "id": "C", "testo": "Accelero avvicinandomi al camion per essere pronto appena finisce la curva" }
+    ],
+    "corretta": "B",
+    "spiegazione": "Il sorpasso in curva è vietato dall'art. 148 C.d.S. perché non hai visibilità sul senso opposto. La pressione di chi è dietro non è mai una ragione valida per rischiare.",
+    "articolo": "Art. 148 C.d.S.",
+    "statistica": "Il sorpasso vietato causa il 12% dei sinistri mortali sulle strade extraurbane (ISTAT 2023).",
+    "categoria": "sorpasso"
+  },
+  {
+    "id": 3,
+    "titolo": "Precedenza all'incrocio",
+    "condizioni": "Giorno, incrocio senza semaforo",
+    "descrizione": "Arrivi a un incrocio senza segnali. Sulla tua destra c'è una strada uguale alla tua. Stai per entrare nell'incrocio quando vedi un'auto provenire da destra ad andatura normale.",
+    "immagine": "incrocio",
+    "scelte": [
+      { "id": "A", "testo": "Passo per primo perché sto già entrando nell'incrocio" },
+      { "id": "B", "testo": "Do la precedenza all'auto che viene da destra e aspetto" },
+      { "id": "C", "testo": "Suono il clacson per avvertire e passo comunque" }
+    ],
+    "corretta": "B",
+    "spiegazione": "All'incrocio senza segnali vige la regola della destra (art. 145 C.d.S.): chi proviene da destra ha sempre la precedenza, indipendentemente da chi è entrato prima nell'incrocio.",
+    "articolo": "Art. 145 C.d.S.",
+    "statistica": "La mancata precedenza è la seconda causa di incidenti in Italia con il 22% dei casi (ISTAT 2023).",
+    "categoria": "precedenza"
+  },
+  {
+    "id": 4,
+    "titolo": "Velocità nel centro abitato",
+    "condizioni": "Pomeriggio, zona residenziale",
+    "descrizione": "Sei in una zona residenziale, limite 30 km/h. Sei in ritardo. La strada sembra libera e non vedi pedoni. Il tuo navigatore segna 42 km/h.",
+    "immagine": "zona_residenziale",
+    "scelte": [
+      { "id": "A", "testo": "Continuo a quella velocità, la strada è vuota" },
+      { "id": "B", "testo": "Rallento subito sotto i 30 km/h" },
+      { "id": "C", "testo": "Rallento solo se vedo qualcuno" }
+    ],
+    "corretta": "B",
+    "spiegazione": "Il limite va rispettato sempre, non solo quando ci sono pedoni visibili. In zona 30 la probabilità di sopravvivenza di un pedone investito sale dall'11% al 90% rispetto a 50 km/h.",
+    "articolo": "Art. 142 C.d.S.",
+    "statistica": "L'eccesso di velocità è la prima causa di morte stradale: coinvolto nel 30% dei sinistri mortali (ISTAT 2023).",
+    "categoria": "velocita"
+  },
+  {
+    "id": 5,
+    "titolo": "Uso del cellulare",
+    "condizioni": "Giorno, autostrada",
+    "descrizione": "Stai guidando in autostrada a 120 km/h. Il tuo telefono vibra con una notifica. Sei in coda da ore e ti aspetta un messaggio importante.",
+    "immagine": "autostrada",
+    "scelte": [
+      { "id": "A", "testo": "Sbircio velocemente il telefono tenendo gli occhi sulla strada" },
+      { "id": "B", "testo": "Mi fermo alla prossima area di servizio e controllo il telefono lì" },
+      { "id": "C", "testo": "Attivo il vivavoce e rispondo subito" }
+    ],
+    "corretta": "B",
+    "spiegazione": "Usare il cellulare alla guida, anche solo per guardare la schermata, aumenta il rischio di incidente di 4 volte. A 120 km/h, 2 secondi di distrazione equivalgono a 67 metri percorsi alla cieca.",
+    "articolo": "Art. 173 C.d.S.",
+    "statistica": "La distrazione da cellulare è coinvolta nel 25% degli incidenti tra i guidatori under 30 (ISTAT 2023).",
+    "categoria": "distrazione"
+  }
+]

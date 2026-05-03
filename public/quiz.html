@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Patentino — SafeDrive</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo"><span class="nav-dot"></span>SafeDrive Simulator</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="simulator.html">Simulatore</a></li>
+      <li><a href="quiz.html" class="active">Quiz</a></li>
+    </ul>
+  </nav>
+
+  <!-- Schermata inizio -->
+  <div id="schermataInizio" class="schermata">
+    <div class="inizio-box">
+      <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+      <h1>Quiz Patentino</h1>
+      <p>10 domande sul Codice della Strada, come quelle del vero esame. Hai 20 secondi per risposta.</p>
+      <div class="info-row">
+        <span>10 domande</span>
+        <span>·</span>
+        <span>20 secondi a domanda</span>
+        <span>·</span>
+        <span>max 200 punti</span>
+      </div>
+      <button class="btn-primary" id="btnIniziaQuiz" style="margin-top: 24px;">Inizia il quiz</button>
+    </div>
+  </div>
+
+  <!-- Schermata quiz attivo -->
+  <div id="schermataQuiz" class="schermata hidden">
+    <div class="quiz-header">
+      <div class="quiz-progress-text" id="quizProgressText">Domanda 1 di 10</div>
+      <div class="sim-score-badge" id="quizScore">0 pt</div>
+    </div>
+    <div class="sim-progress-bar">
+      <div class="sim-progress-fill" id="quizProgressFill" style="width: 0%"></div>
+    </div>
+
+    <div class="quiz-layout">
+      <div class="quiz-domanda-box">
+        <h2 class="quiz-domanda" id="quizDomanda"></h2>
+
+        <div class="timer-row" style="margin: 20px 0;">
+          <div class="timer-track">
+            <div class="timer-fill" id="quizTimerFill" style="width:100%"></div>
+          </div>
+          <span class="timer-label" id="quizTimerLabel">20</span>
+        </div>
+
+        <div class="quiz-scelte" id="quizScelte"></div>
+
+        <div class="sim-feedback hidden" id="quizFeedback">
+          <div class="feedback-title" id="quizFeedbackTitle"></div>
+          <p id="quizFeedbackSpieg"></p>
+          <p class="feedback-articolo" id="quizFeedbackArt"></p>
+        </div>
+
+        <button class="btn-primary hidden" id="btnQuizProssimo" style="margin-top: 16px;">
+          Prossima domanda →
+        </button>
+      </div>
+
+      <div class="quiz-sidebar">
+        <div class="sidebar-head">
+          <strong>Riepilogo</strong>
+        </div>
+        <div class="quiz-dots" id="quizDots"></div>
+        <div class="quiz-sidebar-stats">
+          <div class="qs-row"><span>Corrette</span><span class="qs-val green" id="qsCorrette">0</span></div>
+          <div class="qs-row"><span>Errate</span><span class="qs-val red" id="qsErrate">0</span></div>
+          <div class="qs-row"><span>Punti</span><span class="qs-val" id="qsPunti">0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schermata risultato -->
+  <div id="schermataRisultatoQuiz" class="schermata hidden">
+    <div class="risultato-box">
+      <div class="risultato-emoji" id="quizEmoji"></div>
+      <h2 id="quizTitolo"></h2>
+      <div class="risultato-stats">
+        <div class="r-stat"><span id="qrPunti">0</span><small>punti</small></div>
+        <div class="r-stat"><span id="qrCorrette">0</span><small>corrette</small></div>
+        <div class="r-stat"><span id="qrPerc">0%</span><small>precisione</small></div>
+      </div>
+      <p id="quizMessaggio" style="color: var(--testo-muted); margin-bottom: 28px;"></p>
+
+      <div class="riepilogo-risposte" id="riepilogoRisposte"></div>
+
+      <div class="risultato-btns">
+        <button class="btn-primary" id="btnQuizRiprova">Riprova</button>
+        <a href="simulator.html" class="btn-outline">Vai al simulatore</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+
+</html>
