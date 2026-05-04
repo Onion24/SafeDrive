@@ -98,7 +98,7 @@ const DOMANDE = [
     domanda: "I bambini fino a 150 cm devono obbligatoriamente usare:",
     scelte: [
       "La cintura normale è sufficiente",
-      "Un sistema di ritenuta omologato adatto alla loro taglia",
+      "Un seggiolino omologato adatto alla loro taglia",
       "Solo il sedile posteriore senza altri dispositivi",
       "Nessun dispositivo speciale se hanno più di 6 anni",
     ],

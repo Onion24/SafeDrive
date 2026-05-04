@@ -11,7 +11,7 @@
 <body>
 
     <nav class="navbar">
-        <div class="nav-logo"><span class="nav-dot"></span>SafeDrive Simulator</div>
+        <div class="nav-logo"><span class="nav-dot"></span>SafeDrive</div>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="simulator.html">Simulatore</a></li>
@@ -68,7 +68,7 @@
     <script>
         // Se già loggato vai alla dashboard
         if (localStorage.getItem('token')) {
-            window.location.href = '/dashboard.html';
+            window.location.href = '/index.html';
         }
 
         function mostraTab(tab) {
@@ -86,7 +86,7 @@
             try {
                 const dati = await login(email, password);
                 salvaSessione(dati.token, dati.username);
-                window.location.href = '/dashboard.html';
+                window.location.href = '/index.html';
             } catch (e) {
                 errEl.textContent = e.message;
                 errEl.classList.remove('hidden');
