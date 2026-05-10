@@ -12,13 +12,18 @@ function leggiScenari() {
 
 // GET /api/scenarios
 // GET /api/scenarios?categoria=velocita
+
+// Per utilizzare questo: GET http://TUO-IP:3000/api/scenarios per ottenere tutti gli scenari, oppure GET http://TUO-IP:3000/api/scenarios?categoria=velocita per filtrare per categoria "velocità". Se vuoi ottenere i dati in formato XML, puoi fare GET http://TUO-IP:3000/api/scenarios?format=xml
 router.get('/', (req, res) => {
   let scenari = leggiScenari();
 
   if (req.query.categoria) {
     scenari = scenari.filter(s => s.categoria === req.query.categoria);
   }
-
+  if (req.query.format === 'xml') {
+    res.set('Content-Type', 'application/xml');
+    return res.send(scenariToXml(scenari));
+  }
   res.json(scenari);
 });
 
