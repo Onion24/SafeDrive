@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Dati locali come fallback se l'API esterna non risponde
+// Dati locali ISTAT come fallback se l'API esterna non risponde
 const DATI_FALLBACK = {
   anno: 2023,
   fonte: "ISTAT - Incidenti stradali in Italia",
@@ -31,81 +31,41 @@ const DATI_FALLBACK = {
   ]
 };
 
-// Funzione che chiama l'API World Bank per i morti stradali in Italia
-// Indicatore: SH.STA.TRAF.P5 = morti per incidenti stradali ogni 100.000 abitanti
+// Chiama la World Bank per i morti stradali in Italia ogni 100.000 abitanti
 async function fetchDatiWorldBank() {
   const url = 'https://api.worldbank.org/v2/country/IT/indicator/SH.STA.TRAF.P5?format=json&mrv=5';
-  
   const risposta = await fetch(url);
-  
-  if (!risposta.ok) {
-    throw new Error('API World Bank non disponibile');
-  }
-  
-  const json = await risposta.json();
-  
-  // La World Bank restituisce un array di due elementi:
-  // [0] = metadati della risposta
-  // [1] = array con i dati anno per anno
-  const dati = json[1];
-  
-  if (!dati || dati.length === 0) {
-    throw new Error('Nessun dato ricevuto');
-  }
 
-  // Costruiamo un array degli ultimi anni con i dati disponibili
-  const andamento = dati
+  if (!risposta.ok) throw new Error('API World Bank non disponibile');
+
+  const json = await risposta.json();
+  const dati = json[1];
+
+  if (!dati || dati.length === 0) throw new Error('Nessun dato ricevuto');
+
+  return dati
     .filter(d => d.value !== null)
     .map(d => ({
       anno: d.date,
       morti_per_100k: Math.round(d.value * 10) / 10,
       paese: d.country.value
     }));
-
-  return andamento;
 }
 
 // GET /api/stats
-// Restituisce i dati locali ISTAT + i dati in tempo reale dalla World Bank
+// Restituisce dati locali ISTAT + dati World Bank (con fallback se offline)
 router.get('/', async (req, res) => {
   try {
-    // Chiama l'API esterna reale
-    const datiWorldBank = await fetchDatiWorldBank();
-
-    // Combina i dati locali con quelli dell'API esterna
-    const risposta = {
+    const andamento_mondiale = await fetchDatiWorldBank();
+    res.json({
       ...DATI_FALLBACK,
-      // Aggiunge i dati reali della World Bank
-      andamento_mondiale: datiWorldBank,
+      andamento_mondiale,
       fonte_esterna: 'World Bank Open Data - SH.STA.TRAF.P5',
       url_fonte: 'https://data.worldbank.org/indicator/SH.STA.TRAF.P5?locations=IT'
-    };
-
-    res.json(risposta);
-
+    });
   } catch (err) {
-    // Se l'API esterna fallisce, usa i dati locali come fallback
     console.error('API esterna non raggiungibile, uso dati locali:', err.message);
-    
-    res.json({
-      ...DATI_FALLBACK,
-      avviso: 'Dati esterni non disponibili, visualizzati dati locali'
-    });
-  }
-});
-
-// GET /api/stats/worldbank
-// Endpoint dedicato solo ai dati World Bank
-router.get('/worldbank', async (req, res) => {
-  try {
-    const dati = await fetchDatiWorldBank();
-    res.json({
-      fonte: 'World Bank Open Data',
-      indicatore: 'Morti per incidenti stradali ogni 100.000 abitanti - Italia',
-      dati
-    });
-  } catch (err) {
-    res.status(503).json({ errore: 'API World Bank non raggiungibile', dettaglio: err.message });
+    res.json({ ...DATI_FALLBACK, avviso: 'Dati esterni non disponibili, visualizzati dati locali' });
   }
 });
 

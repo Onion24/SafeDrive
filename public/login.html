@@ -102,7 +102,7 @@
             try {
                 const dati = await register(username, email, password);
                 salvaSessione(dati.token, dati.username);
-                window.location.href = '/dashboard.html';
+                window.location.href = '/index.html';
             } catch (e) {
                 errEl.textContent = e.message;
                 errEl.classList.remove('hidden');
