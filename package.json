@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Progetto di fine anno TDP",
   "license": "ISC",
-  "author": "Adam Izem & Roberto Agnetti",
+  "author": "Adam Izem, Roberto Agnetti & Maria Zeko",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
