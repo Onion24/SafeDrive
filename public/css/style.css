@@ -88,6 +88,21 @@ body {
   font-size: 14px;
   color: var(--testo-muted);
 }
+.nav-dark-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--raggio);
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-dark-toggle:hover {
+  background: var(--sfondo);
+}
 
 /* === Bottoni === */
 .btn-primary {
@@ -1049,4 +1064,30 @@ body {
   .quiz-sidebar {
     display: none;
   }
+}
+
+/* === Dark Mode === */
+body.dark-mode {
+  --rosso: #ff6b6b;
+  --rosso-scuro: #ff5252;
+  --rosso-chiaro: #2c1a1a;
+  --blu: #4a9eff;
+  --blu-chiaro: #1a2a3f;
+  --verde: #7fc97f;
+  --verde-chiaro: #1f2f1f;
+  --giallo: #ffd166;
+  --giallo-chiaro: #2d2610;
+  --testo: #e5e5e5;
+  --testo-muted: #b0b0b0;
+  --bordo: #333333;
+  --sfondo: #1a1a1a;
+  --bianco: #242424;
+}
+
+body.dark-mode #simCanvas {
+  filter: brightness(0.9);
+}
+
+body.dark-mode .nav-dark-toggle {
+  color: var(--testo);
 }
