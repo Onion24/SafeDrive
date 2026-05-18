@@ -102,8 +102,11 @@
         const username = localStorage.getItem('username');
         if (username) {
             document.getElementById('navAuth').innerHTML =
-                `<span class="nav-user">Ciao, ${username}</span>
-         <button onclick="logout()" class="btn-outline">Esci</button>`;
+                `<button id="darkModeToggle" class="nav-dark-toggle" title="Attiva modalità scura">🌙</button>
+                 <span class="nav-user">Ciao, ${username}</span>
+                 <button onclick="logout()" class="btn-outline">Esci</button>`;
+            // Il bottone è stato ricreato con innerHTML: riaggancia listener e icona
+            if (window.darkModeBindToggle) window.darkModeBindToggle();
         }
 
         // Carica statistiche ISTAT

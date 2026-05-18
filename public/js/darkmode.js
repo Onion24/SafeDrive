@@ -2,71 +2,53 @@
 (function () {
   const storageKey = 'safedrive-darkmode';
 
-  function initDarkMode() {
-    const body = document.body;
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    
-    if (!body || !darkModeToggle) return;
-
-    const isDarkMode = localStorage.getItem(storageKey) === 'true';
-    if (isDarkMode) {
-      enableDarkMode(body, darkModeToggle);
-    } else {
-      disableDarkMode(body, darkModeToggle);
-    }
-  }
-
-  function enableDarkMode(body, darkModeToggle) {
-    body.classList.add('dark-mode');
-    if (darkModeToggle) {
-      darkModeToggle.textContent = '☀️';
-      darkModeToggle.title = 'Disattiva modalità scura';
-    }
+  function enableDarkMode() {
+    document.body.classList.add('dark-mode');
+    const btn = document.getElementById('darkModeToggle');
+    if (btn) { btn.textContent = '☀️'; btn.title = 'Disattiva modalità scura'; }
     localStorage.setItem(storageKey, 'true');
   }
 
-  function disableDarkMode(body, darkModeToggle) {
-    body.classList.remove('dark-mode');
-    if (darkModeToggle) {
-      darkModeToggle.textContent = '🌙';
-      darkModeToggle.title = 'Attiva modalità scura';
-    }
+  function disableDarkMode() {
+    document.body.classList.remove('dark-mode');
+    const btn = document.getElementById('darkModeToggle');
+    if (btn) { btn.textContent = '🌙'; btn.title = 'Attiva modalità scura'; }
     localStorage.setItem(storageKey, 'false');
   }
 
-  // Wait for DOM to be ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      initDarkMode();
-      
-      const darkModeToggle = document.getElementById('darkModeToggle');
-      const body = document.body;
-      
-      if (darkModeToggle && body) {
-        darkModeToggle.addEventListener('click', function () {
-          if (body.classList.contains('dark-mode')) {
-            disableDarkMode(body, darkModeToggle);
-          } else {
-            enableDarkMode(body, darkModeToggle);
-          }
-        });
-      }
-    });
-  } else {
-    // DOM is already ready
-    initDarkMode();
-    
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
-    
-    if (darkModeToggle && body) {
-      darkModeToggle.addEventListener('click', function () {
-        if (body.classList.contains('dark-mode')) {
-          disableDarkMode(body, darkModeToggle);
-        } else {
-          enableDarkMode(body, darkModeToggle);
-        }
-      });
+  // Aggiorna l'icona del bottone in base allo stato attuale
+  function syncIcon() {
+    const btn = document.getElementById('darkModeToggle');
+    if (!btn) return;
+    if (document.body.classList.contains('dark-mode')) {
+      btn.textContent = '☀️';
+      btn.title = 'Disattiva modalità scura';
+    } else {
+      btn.textContent = '🌙';
+      btn.title = 'Attiva modalità scura';
     }
   }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Applica dark mode al body
+    if (localStorage.getItem(storageKey) === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+    syncIcon();
+
+    // Event delegation: il listener sta sul document, non sul bottone.
+    // Funziona anche se il bottone viene ricreato con innerHTML.
+    document.addEventListener('click', function (e) {
+      if (e.target && e.target.id === 'darkModeToggle') {
+        if (document.body.classList.contains('dark-mode')) {
+          disableDarkMode();
+        } else {
+          enableDarkMode();
+        }
+      }
+    });
+  });
+
+  // Chiamata dopo innerHTML per risincronizzare l'icona del nuovo bottone
+  window.darkModeBindToggle = syncIcon;
 })();
